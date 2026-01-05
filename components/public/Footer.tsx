@@ -1,7 +1,6 @@
 import React from 'react';
 import { Profile, Language } from '../../types';
 import { Mail, Linkedin, Globe, Hash } from 'lucide-react';
-// Fixing error: Module '"react-router-dom"' has no exported member 'Link'.
 import { Link } from 'react-router-dom';
 import { TRANSLATIONS } from '../../constants';
 
@@ -14,7 +13,7 @@ export const Footer: React.FC<FooterProps> = ({ profile, language }) => {
   const t = TRANSLATIONS[language].footer;
 
   return (
-    <footer className="bg-primary text-white pt-20 pb-10">
+    <footer className="bg-primary dark:bg-darkCard text-white pt-20 pb-10 transition-colors duration-300">
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10 border-b border-white/10 pb-16 mb-10">
           <div>
@@ -34,7 +33,7 @@ export const Footer: React.FC<FooterProps> = ({ profile, language }) => {
                 href={social.href} 
                 target="_blank" 
                 rel="noreferrer" 
-                className="w-12 h-12 flex items-center justify-center bg-white/5 rounded-full hover:bg-accent hover:scale-110 transition-all duration-300"
+                className="w-12 h-12 flex items-center justify-center bg-white/5 dark:bg-white/10 rounded-full hover:bg-accent hover:scale-110 transition-all duration-300"
               >
                 {social.icon}
               </a>

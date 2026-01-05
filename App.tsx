@@ -7,40 +7,64 @@ import { AdminLogin } from './pages/AdminLogin';
 import { PortfolioData, Language } from './types';
 import { INITIAL_DATA, ADMIN_PASSWORD } from './constants';
 
+// وظيفة لدمج البيانات المحفوظة مع البيانات الجديدة في الكود
+// هذا يضمن عدم فقدان بيانات المستخدم عند إضافة حقول جديدة في التحديثات
+const deepMerge = (target: any, source: any): any => {
+  if (typeof target !== 'object' || target === null) {
+    return source !== undefined ? source : target;
+  }
+  
+  if (Array.isArray(target)) {
+    // في حالة المصفوفات (مثل المشاريع)، نفضل البيانات المحفوظة (المصدر) إذا وجدت
+    // لأن المستخدم قد يكون رتبها أو حذف منها
+    return Array.isArray(source) ? source : target;
+  }
+
+  const output = { ...target };
+  if (typeof source === 'object' && source !== null) {
+    Object.keys(source).forEach(key => {
+      if (typeof source[key] === 'object' && source[key] !== null && key in target) {
+        if (Array.isArray(source[key])) {
+           output[key] = source[key];
+        } else {
+           output[key] = deepMerge(target[key], source[key]);
+        }
+      } else {
+        output[key] = source[key];
+      }
+    });
+  }
+  return output;
+};
+
 const App: React.FC = () => {
-  // State for data persistence
+  // استخدام مفتاح تخزين ثابت لإصدار البيانات الحالي
+  const STORAGE_KEY = 'creative_portfolio_data_v1.0';
+
   const [data, setData] = useState<PortfolioData>(() => {
-    const saved = localStorage.getItem('portfolio_data_v2');
+    const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
-      return JSON.parse(saved);
-    }
-    // Attempt migration from v1 (single object) to v2 (dual object)
-    const oldSaved = localStorage.getItem('portfolio_data');
-    if (oldSaved) {
-      const oldData = JSON.parse(oldSaved);
-      // If the old data looks like it has 'profile', it's v1. 
-      // We will use it for EN and copy structure for AR
-      if (oldData.profile) {
-        return {
-          en: oldData,
-          ar: { ...oldData, profile: { ...oldData.profile, name: "محمد خالد", title: "مصمم جرافيك", bio: "يرجى تحديث السيرة الذاتية بالعربية من لوحة التحكم." } }
-        };
+      try {
+        const parsedSaved = JSON.parse(saved);
+        // ندمج البيانات المحفوظة فوق البيانات الأولية
+        // INITIAL_DATA هو الأساس (يحتوي على الحقول الجديدة)
+        // parsedSaved هو التغييرات (يملأ القيم)
+        return deepMerge(INITIAL_DATA, parsedSaved);
+      } catch (e) {
+        console.error("Failed to parse stored data", e);
       }
     }
     return INITIAL_DATA;
   });
 
-  // State for authentication
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     return localStorage.getItem('auth_token') === 'true';
   });
 
-  // State for language
   const [language, setLanguage] = useState<Language>(() => {
-    return (localStorage.getItem('app_language') as Language) || 'en';
+    return (localStorage.getItem('app_language') as Language) || 'ar';
   });
 
-  // Effect to handle Document direction based on language
   useEffect(() => {
     document.documentElement.lang = language;
     document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
@@ -48,14 +72,13 @@ const App: React.FC = () => {
     localStorage.setItem('app_language', language);
   }, [language]);
 
-  // Persist data whenever it changes
-  useEffect(() => {
-    localStorage.setItem('portfolio_data_v2', JSON.stringify(data));
-  }, [data]);
-
-  const toggleLanguage = () => {
-    setLanguage(prev => prev === 'en' ? 'ar' : 'en');
+  // حفظ البيانات فورياً عند حدوث أي تعديل
+  const handleUpdateData = (newData: PortfolioData) => {
+    setData(newData);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
   };
+
+  const toggleLanguage = () => setLanguage(prev => prev === 'en' ? 'ar' : 'en');
 
   const handleLogin = (password: string) => {
     if (password === ADMIN_PASSWORD) {
@@ -71,33 +94,11 @@ const App: React.FC = () => {
     localStorage.removeItem('auth_token');
   };
 
-  const handleUpdateData = (newData: PortfolioData) => {
-    setData(newData);
-  };
-
   return (
     <Router>
       <Routes>
-        <Route 
-          path="/" 
-          element={
-            <PublicPage 
-              data={data[language]} 
-              language={language} 
-              onToggleLanguage={toggleLanguage} 
-            />
-          } 
-        />
-        <Route 
-          path="/works" 
-          element={
-            <AllProjectsPage 
-              data={data[language]} 
-              language={language} 
-              onToggleLanguage={toggleLanguage} 
-            />
-          } 
-        />
+        <Route path="/" element={<PublicPage data={data[language]} language={language} onToggleLanguage={toggleLanguage} />} />
+        <Route path="/works" element={<AllProjectsPage data={data[language]} language={language} onToggleLanguage={toggleLanguage} />} />
         <Route 
           path="/admin" 
           element={

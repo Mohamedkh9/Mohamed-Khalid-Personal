@@ -68,7 +68,7 @@ export const PublicPage: React.FC<PublicPageProps> = ({ data, language, onToggle
   }, [data.customSections]);
 
   return (
-    <div className={`min-h-screen bg-background font-sans text-text selection:bg-accent selection:text-white ${language === 'ar' ? 'font-cairo' : ''}`}>
+    <div className={`min-h-screen bg-background dark:bg-darkBg font-sans text-text dark:text-gray-200 selection:bg-accent selection:text-white ${language === 'ar' ? 'font-cairo' : ''}`}>
       <Navbar 
         data={data}
         language={language}
@@ -83,22 +83,22 @@ export const PublicPage: React.FC<PublicPageProps> = ({ data, language, onToggle
         <section 
           id="about" 
           ref={aboutSectionRef}
-          className={`py-24 border-t border-gray-200 scroll-mt-28 transition-all duration-1000 ease-out transform ${isAboutVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+          className={`py-24 border-t border-gray-200 dark:border-gray-800 scroll-mt-28 transition-all duration-1000 ease-out transform ${isAboutVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
         >
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8">
             <div className="space-y-10">
               <div>
-                <h2 className="text-4xl font-bold text-primary mb-2 font-serif">{t.about.experience}</h2>
+                <h2 className="text-4xl font-bold text-primary dark:text-white mb-2 font-serif">{t.about.experience}</h2>
                 <div className="h-1 w-16 bg-accent rounded-full"></div>
               </div>
               <div className="space-y-8 relative">
-                <div className={`absolute top-2 bottom-2 w-0.5 bg-gray-200 ${language === 'ar' ? 'right-[9px]' : 'left-[9px]'}`}></div>
+                <div className={`absolute top-2 bottom-2 w-0.5 bg-gray-200 dark:bg-gray-800 ${language === 'ar' ? 'right-[9px]' : 'left-[9px]'}`}></div>
                 {data.experiences.map(exp => (
                   <div key={exp.id} className={`relative ${language === 'ar' ? 'pr-8' : 'pl-8'}`}>
-                    <div className={`absolute top-2 w-5 h-5 rounded-full border-4 border-white bg-accent shadow-sm ${language === 'ar' ? 'right-0' : 'left-0'}`}></div>
-                    <h4 className="font-bold text-xl text-primary">{exp.role}</h4>
+                    <div className={`absolute top-2 w-5 h-5 rounded-full border-4 border-white dark:border-darkCard bg-accent shadow-sm ${language === 'ar' ? 'right-0' : 'left-0'}`}></div>
+                    <h4 className="font-bold text-xl text-primary dark:text-white">{exp.role}</h4>
                     <div className="text-sm font-medium text-accent mb-2">{exp.company} • {exp.period}</div>
-                    <p className="text-gray-500 leading-relaxed text-sm">{exp.description}</p>
+                    <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-sm">{exp.description}</p>
                   </div>
                 ))}
               </div>
@@ -106,17 +106,17 @@ export const PublicPage: React.FC<PublicPageProps> = ({ data, language, onToggle
 
             <div className="space-y-10">
                <div>
-                  <h2 className="text-4xl font-bold text-primary mb-2 font-serif">{t.about.education}</h2>
+                  <h2 className="text-4xl font-bold text-primary dark:text-white mb-2 font-serif">{t.about.education}</h2>
                   <div className="h-1 w-16 bg-accent rounded-full"></div>
                </div>
                {data.education && data.education.length > 0 ? (
                   <div className="space-y-6">
                     {data.education.map(edu => (
-                      <div key={edu.id} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                        <h4 className="font-bold text-lg text-primary">{edu.degree}</h4>
-                        <div className="text-gray-500 mb-2">{edu.institution}</div>
+                      <div key={edu.id} className="bg-white dark:bg-darkCard p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow">
+                        <h4 className="font-bold text-lg text-primary dark:text-white">{edu.degree}</h4>
+                        <div className="text-gray-500 dark:text-gray-400 mb-2">{edu.institution}</div>
                         <div className="flex justify-between items-center mt-2">
-                           <span className="text-xs font-bold bg-gray-100 px-3 py-1 rounded-full text-gray-600">{edu.year}</span>
+                           <span className="text-xs font-bold bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full text-gray-600 dark:text-gray-400">{edu.year}</span>
                            {edu.grade && <span className="text-xs text-accent font-medium">{edu.grade}</span>}
                         </div>
                       </div>
@@ -129,19 +129,19 @@ export const PublicPage: React.FC<PublicPageProps> = ({ data, language, onToggle
             
             <div className="space-y-10">
                <div>
-                 <h2 className="text-4xl font-bold text-primary mb-2 font-serif">{t.about.skills}</h2>
+                 <h2 className="text-4xl font-bold text-primary dark:text-white mb-2 font-serif">{t.about.skills}</h2>
                  <div className="h-1 w-12 bg-accent rounded-full"></div>
                </div>
                <div className="flex flex-col gap-6">
                  {data.skillCategories.map(cat => (
-                   <div key={cat.id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:border-accent/20 hover:shadow-lg transition-all duration-300">
-                     <h3 className="font-bold text-lg mb-4 text-primary flex items-center gap-2">
+                   <div key={cat.id} className="bg-white dark:bg-darkCard p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:border-accent/20 dark:hover:border-accent/40 hover:shadow-lg transition-all duration-300">
+                     <h3 className="font-bold text-lg mb-4 text-primary dark:text-white flex items-center gap-2">
                        <div className="w-1.5 h-1.5 rounded-full bg-accent"></div>
                        {cat.name}
                      </h3>
                      <div className="flex flex-wrap gap-2">
                        {cat.skills.map((skill, idx) => (
-                         <span key={idx} className="bg-gray-50 hover:bg-accent/5 hover:text-accent px-3 py-1.5 rounded-md text-xs text-gray-600 font-medium transition-colors border border-gray-100">
+                         <span key={idx} className="bg-gray-50 dark:bg-gray-800 hover:bg-accent/5 dark:hover:bg-accent/10 hover:text-accent px-3 py-1.5 rounded-md text-xs text-gray-600 dark:text-gray-400 font-medium transition-colors border border-gray-100 dark:border-gray-700">
                            {skill}
                          </span>
                        ))}
@@ -166,28 +166,28 @@ export const PublicPage: React.FC<PublicPageProps> = ({ data, language, onToggle
             <section 
               key={section.id} 
               id={`custom-${section.id}`} 
-              className="py-24 border-t border-gray-200 scroll-mt-28"
+              className="py-24 border-t border-gray-200 dark:border-gray-800 scroll-mt-28"
             >
                <div className="mb-12">
-                 <h2 className="text-4xl font-bold text-primary mb-2 font-serif">{section.title}</h2>
+                 <h2 className="text-4xl font-bold text-primary dark:text-white mb-2 font-serif">{section.title}</h2>
                  <div className="h-1 w-20 bg-accent rounded-full"></div>
                </div>
-               <div className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100">
+               <div className="bg-white dark:bg-darkCard p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800">
                  <div 
-                   className="prose prose-lg max-w-none text-gray-600 leading-relaxed font-light"
+                   className="prose prose-lg dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed font-light"
                    dangerouslySetInnerHTML={{ __html: section.content }}
                  />
                </div>
             </section>
         ))}
         
-        <section id="contact" className="py-24 border-t border-gray-200 scroll-mt-28">
-          <div className="bg-primary rounded-[3rem] p-10 md:p-20 text-center text-white relative overflow-hidden shadow-2xl">
+        <section id="contact" className="py-24 border-t border-gray-200 dark:border-gray-800 scroll-mt-28">
+          <div className="bg-primary dark:bg-accent/10 rounded-[3rem] p-10 md:p-20 text-center text-white relative overflow-hidden shadow-2xl">
             <div className="absolute top-0 left-0 w-full h-full opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
             <div className="relative z-10">
-               <h2 className="text-4xl md:text-6xl font-bold mb-6 font-serif tracking-tight">{t.contact.title}</h2>
+               <h2 className="text-4xl md:text-6xl font-bold mb-6 font-serif tracking-tight text-white">{t.contact.title}</h2>
                {t.contact.subtitle && (
-                 <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-12 font-light">
+                 <p className="text-lg md:text-xl text-white/70 dark:text-gray-400 max-w-2xl mx-auto mb-12 font-light">
                    {t.contact.subtitle}
                  </p>
                )}

@@ -43,7 +43,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         element.scrollIntoView({ behavior: 'smooth' });
       }
     } else {
-      // If on another page, navigate to home and attempt to scroll
       navigate('/');
       setTimeout(() => {
         const element = document.getElementById(id);
@@ -63,10 +62,10 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-xl z-50 border-b border-gray-100/50 transition-all duration-300">
+    <nav className="fixed top-0 left-0 w-full bg-white/80 dark:bg-darkBg/80 backdrop-blur-xl z-50 border-b border-gray-100/50 dark:border-gray-800/50 transition-all duration-300">
       <div className="container mx-auto px-6 md:px-12 py-5 flex justify-between items-center">
         <div 
-          className="font-bold text-2xl text-primary tracking-tight cursor-pointer font-serif"
+          className="font-bold text-2xl text-primary dark:text-white tracking-tight cursor-pointer font-serif"
           onClick={handleLogoClick}
         >
           {data.profile.name.split(' ')[0]}<span className="text-accent text-3xl">.</span>
@@ -82,19 +81,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               className={`relative py-1 transition-colors duration-300 cursor-pointer tracking-wide whitespace-nowrap
                 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-accent after:transition-transform after:duration-300
                 ${isHome && activeSection === link.id 
-                  ? 'text-primary font-semibold after:scale-x-100' 
-                  : 'text-gray-500 hover:text-primary after:scale-x-0 hover:after:scale-x-50'
+                  ? 'text-primary dark:text-accent font-semibold after:scale-x-100' 
+                  : 'text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white after:scale-x-0 hover:after:scale-x-50'
                 }`}
             >
               {link.name}
             </a>
           ))}
           
-          <div className="w-px h-5 bg-gray-200"></div>
+          <div className="w-px h-5 bg-gray-200 dark:bg-gray-700"></div>
 
           <button 
             onClick={onToggleLanguage}
-            className="flex items-center gap-2 text-gray-600 hover:text-accent transition-colors font-semibold"
+            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-accent transition-colors font-semibold"
           >
             <Globe size={18} />
             <span>{language === 'en' ? 'AR' : 'EN'}</span>
@@ -105,12 +104,12 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center gap-4 md:hidden">
             <button 
             onClick={onToggleLanguage}
-            className="text-gray-600 hover:text-accent transition-colors font-bold text-sm"
+            className="text-gray-600 dark:text-gray-400 hover:text-accent transition-colors font-bold text-sm"
           >
             {language === 'en' ? 'AR' : 'EN'}
           </button>
           <button 
-            className="text-primary hover:text-accent transition-colors"
+            className="text-primary dark:text-white hover:text-accent transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -120,7 +119,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* Mobile Menu Dropdown */}
-      <div className={`md:hidden bg-white border-t border-gray-100 absolute w-full transition-all duration-300 ease-in-out overflow-hidden ${isMobileMenuOpen ? 'max-h-96 shadow-xl' : 'max-h-0'}`}>
+      <div className={`md:hidden bg-white dark:bg-darkCard border-t border-gray-100 dark:border-gray-800 absolute w-full transition-all duration-300 ease-in-out overflow-hidden ${isMobileMenuOpen ? 'max-h-96 shadow-xl' : 'max-h-0'}`}>
             <div className="flex flex-col p-6 gap-2 text-base font-medium">
               {navLinks.map((link) => (
                 <a 
@@ -130,7 +129,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   className={`px-4 py-3 rounded-xl transition-colors duration-200 cursor-pointer flex items-center justify-between
                     ${isHome && activeSection === link.id 
                       ? 'bg-accent/10 text-accent font-bold' 
-                      : 'text-gray-600 hover:text-primary hover:bg-gray-50'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800'
                     }`}
                 >
                   {link.name}

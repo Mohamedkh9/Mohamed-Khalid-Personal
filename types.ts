@@ -1,3 +1,4 @@
+
 export type Language = 'en' | 'ar';
 
 export interface Profile {
@@ -23,6 +24,7 @@ export interface Project {
   id: string;
   title: string;
   category: string;
+  tags?: string[]; // Custom filters
   description: string;
   imageUrl: string;
   featured: boolean;
